@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="ياس ستوديو — مبرمج واجهات أمامية أصنع منصات تعليمية ذكية وتطبيقات ويب تفاعلية.">
+<meta name="author" content="Yas Studio">
+<meta name="theme-color" content="#6366f1">
+<meta property="og:title" content="Yas Studio | Frontend Developer">
+<meta property="og:description" content="أصنع منصات تعليمية ذكية وتطبيقات ويب تفاعلية">
+<meta property="og:type" content="website">
+<title>Yas Studio | Frontend Developer Pro Max</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070c; --bg2:#0f0f18; --surface:#12121a;
+  --primary:#6366f1; --primary2:#8b5cf6; --accent:#06b6d4;
+  --text:#f1f5f9; --muted:#94a3b8;
+  --border:rgba(255,255,255,.08); --card:rgba(255,255,255,.03);
+  --success:#10b981; --warning:#f59e0b;
+  --transition:.3s cubic-bezier(.4,0,.2,1);
+  --shadow-glow:0 10px 40px rgba(99,102,241,.3);
+}
+[data-theme="light"]{
+  --bg:#f8fafc; --bg2:#f1f5f9; --surface:#fff;
+  --text:#0f172a; --muted:#475569;
+  --border:rgba(0,0,0,.08); --card:rgba(0,0,0,.02);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.7;transition:background var(--transition),color var(--transition)}
+::selection{background:var(--primary);color:#fff}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--primary),var(--accent));border-radius:10px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ===== Preloader ===== */
+.preloader{position:fixed;inset:0;background:var(--bg);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transition:opacity .6s,visibility .6s}
+.preloader.hidden{opacity:0;visibility:hidden}
+.preloader-logo{font-family:'Space Grotesk',sans-serif;font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;animation:pulse-scale 1.5s ease-in-out infinite}
+@keyframes pulse-scale{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.preloader-bar{width:200px;height:3px;background:rgba(99,102,241,.2);border-radius:3px;overflow:hidden}
+.preloader-progress{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));animation:load 2s ease-in-out forwards}
+@keyframes load{to{width:100%}}
+
+/* ===== Cursor ===== */
+@media (hover:hover){
+  body{cursor:none}
+  a,button{cursor:none}
+  .cursor-dot{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:transform .1s,width .2s,height .2s;mix-blend-mode:difference}
+  .cursor-ring{position:fixed;width:36px;height:36px;border:2px solid var(--primary);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:transform .15s ease-out,width .3s,height .3s,border-color .3s;opacity:.6}
+  .cursor-ring.hover{width:60px;height:60px;border-color:var(--accent);opacity:1}
+}
+@media (hover:none){
+  .cursor-dot,.cursor-ring{display:none}
+}
+
+/* ===== Background Effects ===== */
+.cursor-glow{position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.12),transparent 70%);pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:opacity .3s}
+@media (hover:none){.cursor-glow{display:none}}
+.scroll-bar{position:fixed;top:0;right:0;height:3px;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));z-index:10001;transition:width .1s}
+.bg-grid{position:fixed;inset:0;z-index:-2;background-image:linear-gradient(rgba(99,102,241,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.06) 1px,transparent 1px);background-size:55px 55px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%)}
+.orb{position:fixed;border-radius:50%;filter:blur(130px);z-index:-1;opacity:.35;animation:float 22s ease-in-out infinite}
+.orb1{width:520px;height:520px;background:var(--primary);top:-120px;right:-120px}
+.orb2{width:420px;height:420px;background:var(--primary2);bottom:15%;left:-120px;animation-delay:-6s}
+.orb3{width:320px;height:320px;background:var(--accent);top:45%;right:18%;animation-delay:-12s;opacity:.18}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(35px,-35px) scale(1.12)}}
+
+/* ===== Navbar ===== */
+nav{position:fixed;top:0;right:0;left:0;z-index:1000;padding:1rem 5%;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(22px);background:rgba(7,7,12,.65);border-bottom:1px solid var(--border);transition:padding var(--transition)}
+[data-theme="light"] nav{background:rgba(248,250,252,.75)}
+nav.scrolled{padding:.7rem 5%}
+.logo{font-family:'Space Grotesk',sans-serif;font-weight:900;font-size:1.4rem;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;text-decoration:none}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-weight:500;font-size:.95rem;position:relative;transition:color var(--transition)}
+.nav-links a::after{content:'';position:absolute;bottom:-6px;right:0;width:0;height:2px;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width var(--transition)}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-actions{display:flex;gap:.7rem;align-items:center}
+.theme-toggle,.nav-cta{padding:.6rem 1.3rem;border-radius:50px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;font-family:inherit;font-weight:700;font-size:.9rem;transition:all var(--transition)}
+.theme-toggle{width:42px;height:42px;padding:0;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.theme-toggle:hover,.nav-cta:hover{transform:translateY(-2px);border-color:var(--primary)}
+.nav-cta{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:none;box-shadow:var(--shadow-glow)}
+.menu-btn{display:none;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer}
+/* ===== Hero ===== */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:8rem 5% 4rem;position:relative}
+.hero-container{max-width:1200px;display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:center;width:100%}
+.hero-content{text-align:right}
+.hero-badge{display:inline-flex;align-items:center;gap:.6rem;padding:.5rem 1.2rem;border-radius:50px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);font-size:.85rem;color:var(--accent);margin-bottom:2rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 10px var(--success);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.25)}}
+.hero h1{font-size:clamp(2.4rem,4.5vw,4.2rem);font-weight:900;line-height:1.15;margin-bottom:1.4rem;letter-spacing:-.02em}
+.gradient{background:linear-gradient(135deg,var(--primary),var(--primary2) 50%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 200%;animation:gradient-shift 4s ease infinite}
+@keyframes gradient-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero p{font-size:1.12rem;color:var(--muted);margin-bottom:2.4rem;max-width:520px}
+.hero-buttons{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{padding:.95rem 2rem;border-radius:50px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all var(--transition);position:relative;overflow:hidden}
+.btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--primary),var(--accent));opacity:0;transition:opacity var(--transition);z-index:-1}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;box-shadow:var(--shadow-glow)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 50px rgba(99,102,241,.55)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--primary);background:rgba(99,102,241,.1);transform:translateY(-3px)}
+.typing-cursor{display:inline-block;width:3px;height:1em;background:var(--accent);animation:blink 1s infinite;vertical-align:middle;margin-right:4px}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+
+.hero-image-wrapper{position:relative;display:flex;justify-content:center;align-items:center}
+.hero-avatar{width:360px;height:360px;border-radius:32% 68% 68% 32%/32% 32% 68% 68%;background:linear-gradient(135deg,#1e1b4b,#4c1d95,#0c4a6e);display:flex;align-items:center;justify-content:center;position:relative;z-index:2;border:4px solid rgba(99,102,241,.35);box-shadow:0 25px 60px rgba(0,0,0,.55),inset 0 0 25px rgba(99,102,241,.25);animation:morph 8s ease-in-out infinite;overflow:hidden}
+.hero-avatar::after{content:'';position:absolute;inset:0;background:conic-gradient(from 0deg,transparent,rgba(6,182,212,.2),transparent 30%);animation:rotate 8s linear infinite}
+@keyframes rotate{to{transform:rotate(360deg)}}
+.hero-avatar-text{font-family:'Space Grotesk',sans-serif;font-size:7rem;font-weight:900;background:linear-gradient(135deg,#fff,#06b6d4);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 40px rgba(6,182,212,.6);z-index:1;position:relative}
+.hero-image-glow{position:absolute;width:360px;height:360px;filter:blur(45px);opacity:.55;z-index:1;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:32% 68% 68% 32%/32% 32% 68% 68%;animation:morph 8s ease-in-out infinite}
+@keyframes morph{0%,100%{border-radius:32% 68% 68% 32%/32% 32% 68% 68%}50%{border-radius:68% 32% 32% 68%/68% 68% 32% 32%}}
+
+/* Floating tech badges around avatar */
+.floating-badge{position:absolute;padding:.5rem 1rem;border-radius:50px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.4);backdrop-filter:blur(10px);font-size:.85rem;font-weight:700;color:var(--text);z-index:3;animation:float-badge 4s ease-in-out infinite;box-shadow:0 5px 20px rgba(0,0,0,.3)}
+.fb1{top:10%;right:5%;animation-delay:0s}
+.fb2{top:20%;left:0%;animation-delay:-1s}
+.fb3{bottom:15%;right:10%;animation-delay:-2s}
+.fb4{bottom:25%;left:5%;animation-delay:-3s}
+@keyframes float-badge{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+
+section{padding:6rem 5%}
+.section-header{text-align:center;margin-bottom:4rem}
+.section-tag{display:inline-block;padding:.4rem 1rem;border-radius:50px;margin-bottom:1rem;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);color:var(--accent);font-size:.8rem;font-weight:700;letter-spacing:.05em}
+.section-title{font-size:clamp(2rem,3.6vw,2.8rem);font-weight:900;margin-bottom:1rem;letter-spacing:-.02em}
+.section-desc{color:var(--muted);max-width:620px;margin:0 auto}
+
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ===== Platform ===== */
+.platform{background:var(--bg2)}
+.platform-card{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;padding:3rem;background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(6,182,212,.04));border:1px solid rgba(99,102,241,.25);border-radius:28px;backdrop-filter:blur(10px);align-items:center;transition:transform var(--transition),box-shadow var(--transition);transform-style:preserve-3d}
+.platform-card:hover{box-shadow:0 30px 80px rgba(99,102,241,.15)}
+.platform-visual{height:340px;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;background:linear-gradient(135deg,#1e1b4b,#4c1d95,#0c4a6e);position:relative;overflow:hidden}
+.platform-visual::before{content:'';position:absolute;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(6,182,212,.3),transparent 30%);animation:rotate 6s linear infinite}
+.platform-logo{font-family:'Space Grotesk',sans-serif;font-size:4rem;font-weight:900;z-index:1;background:linear-gradient(135deg,#fff,#06b6d4);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 40px rgba(6,182,212,.6)}
+.platform-tagline{color:#e0e7ff;font-size:.9rem;z-index:1;font-weight:500;opacity:.9}
+.platform-body h3{font-size:2rem;font-weight:900;margin-bottom:.5rem}
+.platform-body .studio{color:var(--accent);font-size:.9rem;font-weight:700;margin-bottom:1.2rem;display:block}
+.platform-body>p{color:var(--muted);margin-bottom:1.8rem;font-size:1rem}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:2rem}
+.feature{display:flex;align-items:center;gap:.7rem;font-size:.92rem;color:var(--text)}
+.feature-icon{width:34px;height:34px;flex-shrink:0;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);font-size:1rem}
+.plans{display:flex;gap:.5rem;margin-bottom:1.8rem;flex-wrap:wrap}
+.plan{padding:.35rem .9rem;border-radius:50px;font-size:.78rem;font-weight:700;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.3);color:var(--accent);transition:all var(--transition)}
+.plan:hover{transform:translateY(-2px);background:rgba(6,182,212,.25)}
+
+/* ===== Skills ===== */
+.skills-section{background:var(--bg2)}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;max-width:1200px;margin:0 auto}
+.skill-card{padding:2.5rem;background:var(--card);border:1px solid var(--border);border-radius:24px;transition:all var(--transition);position:relative;overflow:hidden}
+.skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--primary),var(--accent));transform:scaleX(0);transform-origin:right;transition:transform .4s}
+.skill-card:hover{transform:translateY(-10px);border-color:rgba(99,102,241,.4);box-shadow:0 20px 40px rgba(99,102,241,.1)}
+.skill-card:hover::before{transform:scaleX(1)}
+.skill-icon{width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:1.5rem;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);transition:transform var(--transition)}
+.skill-card:hover .skill-icon{transform:rotate(-10deg) scale(1.1)}
+.skill-card h3{font-size:1.3rem;margin-bottom:1rem}
+.skill-card p{color:var(--muted);font-size:.95rem;margin-bottom:1.5rem}
+.skill-tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.tag{padding:.4rem 1rem;background:rgba(99,102,241,.1);border-radius:50px;font-size:.8rem;color:var(--accent);transition:all var(--transition);cursor:default}
+.tag:hover{background:rgba(99,102,241,.25);transform:translateY(-2px)}
+
+/* Skill Progress Bars */
+.skills-bars{max-width:900px;margin:4rem auto 0;padding:3rem;background:var(--card);border:1px solid var(--border);border-radius:24px}
+.skills-bars h3{text-align:center;font-size:1.5rem;margin-bottom:2.5rem}
+.skill-bar{margin-bottom:1.8rem}
+.skill-bar-header{display:flex;justify-content:space-between;margin-bottom:.6rem;font-weight:700;font-size:.95rem}
+.skill-bar-track{height:8px;background:rgba(99,102,241,.15);border-radius:50px;overflow:hidden;position:relative}
+.skill-bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:50px;transition:width 1.5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 15px rgba(99,102,241,.5)}
+
+/* Stats */
+.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2rem;max-width:1000px;margin:4rem auto 0;padding:2.5rem;background:var(--card);border:1px solid var(--border);border-radius:24px}
+.stat{text-align:center}
+.stat-num{font-family:'Space Grotesk',sans-serif;font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat-label{color:var(--muted);font-size:.9rem;margin-top:.3rem}
+/* ===== Testimonials ===== */
+.testimonials{background:var(--bg)}
+.testimonials-slider{max-width:900px;margin:0 auto;position:relative;overflow:hidden;border-radius:24px}
+.testimonials-track{display:flex;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.testimonial{min-width:100%;padding:3rem;background:var(--card);border:1px solid var(--border);border-radius:24px;text-align:center}
+.testimonial-text{font-size:1.15rem;line-height:1.9;color:var(--text);margin-bottom:2rem;font-style:italic;position:relative}
+.testimonial-text::before,.testimonial-text::after{content:'"';font-size:3rem;color:var(--accent);opacity:.3;font-family:Georgia,serif;line-height:0;vertical-align:-.4em}
+.testimonial-text::after{content:'"'!important;vertical-align:-.6em}
+.testimonial-author{display:flex;align-items:center;justify-content:center;gap:1rem}
+.testimonial-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem;color:#fff}
+.testimonial-info{text-align:right}
+.testimonial-name{font-weight:700;font-size:1rem}
+.testimonial-role{color:var(--muted);font-size:.85rem}
+.slider-dots{display:flex;justify-content:center;gap:.5rem;margin-top:2rem}
+.slider-dot{width:10px;height:10px;border-radius:50%;background:var(--border);border:none;cursor:pointer;transition:all var(--transition)}
+.slider-dot.active{background:linear-gradient(135deg,var(--primary),var(--accent));width:30px;border-radius:50px}
+
+/* ===== Contact ===== */
+.contact{padding:6rem 5%;text-align:center}
+.contact-card{max-width:850px;margin:0 auto;padding:4rem 2rem;border-radius:28px;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(6,182,212,.05));border:1px solid rgba(99,102,241,.25);backdrop-filter:blur(10px)}
+.contact-card h2{font-size:2.2rem;font-weight:900;margin-bottom:1rem}
+.contact-card>p{color:var(--muted);margin-bottom:2.5rem}
+.contact-form{display:grid;gap:1.2rem;text-align:right;margin-bottom:2rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.form-group{display:flex;flex-direction:column;gap:.5rem}
+.form-group label{font-size:.9rem;font-weight:700;color:var(--text)}
+.form-group input,.form-group textarea{padding:.9rem 1.2rem;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.95rem;transition:all var(--transition);resize:vertical}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.form-group textarea{min-height:120px}
+.form-submit{justify-self:center;margin-top:.5rem}
+.contact-alt{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border)}
+.contact-link{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.3rem;border-radius:50px;background:var(--card);border:1px solid var(--border);color:var(--text);text-decoration:none;font-weight:700;font-size:.9rem;transition:all var(--transition)}
+.contact-link:hover{transform:translateY(-3px);border-color:var(--primary);background:rgba(99,102,241,.1)}
+
+footer{padding:2rem 5%;text-align:center;border-top:1px solid var(--border);color:var(--muted);font-size:.9rem}
+
+/* ===== Floating Buttons ===== */
+.to-top,.whatsapp{position:fixed;bottom:2rem;width:52px;height:52px;border-radius:50%;border:none;color:#fff;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--transition);z-index:999;text-decoration:none}
+.to-top{left:2rem;background:linear-gradient(135deg,var(--primary),var(--primary2));opacity:0;pointer-events:none;box-shadow:var(--shadow-glow)}
+.to-top.show{opacity:1;pointer-events:auto}
+.to-top:hover{transform:translateY(-5px) scale(1.1)}
+.whatsapp{right:2rem;background:#25d366;font-size:1.5rem;box-shadow:0 10px 30px rgba(37,211,102,.4);animation:whatsapp-pulse 2s infinite}
+.whatsapp:hover{transform:translateY(-5px) scale(1.05)}
+@keyframes whatsapp-pulse{0%,100%{box-shadow:0 10px 30px rgba(37,211,102,.4)}50%{box-shadow:0 10px 40px rgba(37,211,102,.7)}}
+
+/* ===== Toast ===== */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120px);padding:1rem 2rem;background:var(--surface);border:1px solid var(--primary);border-radius:50px;color:var(--text);font-weight:700;box-shadow:0 20px 50px rgba(0,0,0,.5);z-index:10002;transition:transform .4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;gap:.7rem}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ===== Responsive ===== */
+@media(max-width:992px){
+  .hero-container{grid-template-columns:1fr;text-align:center;gap:2rem}
+  .hero-content{text-align:center}
+  .hero p{margin:0 auto 2.4rem}
+  .hero-buttons{justify-content:center}
+  .hero-avatar,.hero-image-glow{width:280px;height:280px}
+  .hero-avatar-text{font-size:5rem}
+  .floating-badge{font-size:.75rem;padding:.4rem .8rem}
+  .nav-links{position:fixed;top:70px;right:0;left:0;flex-direction:column;background:var(--surface);padding:2rem;gap:1.2rem;border-bottom:1px solid var(--border);transform:translateY(-150%);transition:transform var(--transition);z-index:-1}
+  .nav-links.open{transform:translateY(0)}
+  .menu-btn{display:block}
+  .platform-card{grid-template-columns:1fr;padding:2rem;gap:2rem}
+  .platform-visual{height:240px}
+  .platform-logo{font-size:3rem}
+  .form-row{grid-template-columns:1fr}
+  .testimonial{padding:2rem 1.5rem}
+}
+@media(max-width:480px){
+  section{padding:4rem 4%}
+  .hero{padding:7rem 4% 3rem}
+  .contact-card{padding:2.5rem 1.2rem}
+  .contact-card h2{font-size:1.7rem}
+  .stats-bar{padding:1.5rem;gap:1.2rem}
+  .stat-num{font-size:1.8rem}
+  .skills-bars{padding:2rem 1.2rem}
+  .to-top,.whatsapp{width:46px;height:46px;bottom:1.2rem}
+  .to-top{left:1rem}.whatsapp{right:1rem}
+  .floating-badge{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Preloader ===== -->
+<div class="preloader" id="preloader">
+  <div class="preloader-logo">&lt;Yas.Dev /&gt;</div>
+  <div class="preloader-bar"><div class="preloader-progress"></div></div>
+</div>
+
+<!-- ===== Cursor ===== -->
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+<!-- ===== Background ===== -->
+<div class="scroll-bar" id="scrollBar" aria-hidden="true"></div>
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="orb orb1" aria-hidden="true"></div>
+<div class="orb orb2" aria-hidden="true"></div>
+<div class="orb orb3" aria-hidden="true"></div>
+
+<!-- ===== Navbar ===== -->
+<nav id="nav" role="navigation" aria-label="القائمة الرئيسية">
+  <a href="#home" class="logo" aria-label="ياس ستوديو">&lt;Yas.Dev /&gt;</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home" class="active">الرئيسية</a></li>
+    <li><a href="#platform">منصتي</a></li>
+    <li><a href="#skills">مهاراتي</a></li>
+    <li><a href="#testimonials">آراء العملاء</a></li>
+    <li><a href="#contact">تواصل</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي/النهاري">🌙</button>
+    <button class="menu-btn" id="menuBtn" aria-label="فتح القائمة" aria-expanded="false">☰</button>
+    <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">تواصل معي</button>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="home" aria-label="القسم الرئيسي">
+  <div class="hero-container">
+    <div class="hero-content">
+      <div class="hero-badge"><span class="dot"></span> متاح للعمل الحر</div>
+      <h1>مرحباً، أنا <br><span class="gradient" id="typingText">ياس ستوديو</span><span class="typing-cursor"></span></h1>
+      <p>مبرمج واجهات أمامية (Frontend Developer)، أبني منصات تعليمية ذكية وتطبيقات ويب تفاعلية بتجربة مستخدم احترافية.</p>
+      <div class="hero-buttons">
+        <a href="#platform" class="btn btn-primary magnetic">🚀 شاهد منصتي</a>
+        <a href="#contact" class="btn btn-outline magnetic">تواصل معي</a>
+      </div>
+    </div>
+
+    <div class="hero-image-wrapper">
+      <div class="hero-image-glow" aria-hidden="true"></div>
+      <span class="floating-badge fb1">⚛️ React</span>
+      <span class="floating-badge fb2">🎨 UI/UX</span>
+      <span class="floating-badge fb3">🤖 AI</span>
+      <span class="floating-badge fb4">⚡ Fast</span>
+      <div class="hero-avatar" role="img" aria-label="شعار ياس ستوديو">
+        <span class="hero-avatar-text">Y</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Platform ===== -->
+<section class="platform" id="platform">
+  <div class="section-header reveal">
+    <span class="section-tag">⭐ مشروعي المميز</span>
+    <h2 class="section-title">منصة <span class="gradient">YasEdu</span> الذكية</h2>
+    <p class="section-desc">منصة تعليمية متكاملة من تطويري، تجمع بين الذكاء الاصطناعي وتجربة مستخدم سلسة.</p>
+  </div>
+
+  <div class="platform-card reveal" id="tiltCard">
+    <div class="platform-visual">
+      <div class="platform-logo">YasEdu</div>
+      <div class="platform-tagline">منصة تعليمية ذكية من ياس ستوديو</div>
+    </div>
+
+    <div class="platform-body">
+      <h3>YasEdu — منصة التعلم الذكي</h3>
+      <span class="studio">تطوير: Yas Studio</span>
+      <p>منصة تعليمية متطورة تعتمد على الذكاء الاصطناعي لإنشاء الاختبارات تلقائياً من النصوص وملفات PDF، مع مساعد ذكي ودردشة جماعية وغرف خاصة.</p>
+
+      <div class="features">
+        <div class="feature"><div class="feature-icon">🤖</div><span>مساعد ذكاء اصطناعي</span></div>
+        <div class="feature"><div class="feature-icon">📄</div><span>اختبارات من PDF</span></div>
+        <div class="feature"><div class="feature-icon">💬</div><span>دردشة جماعية</span></div>
+        <div class="feature"><div class="feature-icon">🎓</div><span>3 خطط اشتراك</span></div>
+      </div>
+
+      <div class="plans">
+        <span class="plan">Free</span>
+        <span class="plan">Pro</span>
+        <span class="plan">Premium</span>
+      </div>
+
+      <a href="https://mbadrhashbal-dot.github.io/Study-body-/" target="_blank" rel="noopener noreferrer" class="btn btn-primary magnetic">🌐 زيارة المنصة الآن</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Skills ===== -->
+<section class="skills-section" id="skills">
+  <div class="section-header reveal">
+    <span class="section-tag">💡 خبراتي</span>
+    <h2 class="section-title">لماذا <span class="gradient">تختارني؟</span></h2>
+    <p class="section-desc">أجمع بين التصميم الاحترافي والكود النظيف.</p>
+  </div>
+
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-icon">💻</div>
+      <h3>تطوير الواجهات</h3>
+      <p>بناء واجهات سريعة ومتجاوبة باستخدام أحدث التقنيات.</p>
+      <div class="skill-tags"><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span><span class="tag">React</span></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🎨</div>
+      <h3>تصميم UI/UX</h3>
+      <p>تحويل الأفكار إلى تصاميم تفاعلية تخطف الأنظار.</p>
+      <div class="skill-tags"><span class="tag">Figma</span><span class="tag">Animations</span><span class="tag">Responsive</span></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🤖</div>
+      <h3>دمج الذكاء الاصطناعي</h3>
+      <p>تطوير أنظمة تعليمية ذكية متكاملة مع AI.</p>
+      <div class="skill-tags"><span class="tag">AI APIs</span><span class="tag">PDF Parsing</span><span class="tag">Chatbots</span></div>
+    </div>
+  </div>
+
+  <!-- Skill Bars -->
+  <div class="skills-bars reveal">
+    <h3>📊 <span class="gradient">مستوى الاحتراف</span></h3>
+    <div class="skill-bar">
+      <div class="skill-bar-header"><span>HTML / CSS</span><span>95%</span></div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" data-width="95"></div></div>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-bar-header"><span>JavaScript</span><span>90%</span></div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" data-width="90"></div></div>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-bar-header"><span>React</span><span>85%</span></div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-bar-header"><span>UI/UX Design</span><span>88%</span></div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-bar-header"><span>AI Integration</span><span>80%</span></div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" data-width="80"></div></div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar reveal">
+    <div class="stat"><div class="stat-num" data-target="5" data-prefix="+">0</div><div class="stat-label">مشاريع مكتملة</div></div>
+    <div class="stat"><div class="stat-num" data-target="2" data-prefix="+">0</div><div class="stat-label">سنوات خبرة</div></div>
+    <div class="stat"><div class="stat-num" data-target="100" data-suffix="%">0</div><div class="stat-label">رضا العملاء</div></div>
+    <div class="stat"><div class="stat-num" data-target="24" data-suffix="/7">0</div><div class="stat-label">دعم فني</div></div>
+  </div>
+</section>
+
+<!-- ===== Testimonials ===== -->
+<section class="testimonials" id="testimonials">
+  <div class="section-header reveal">
+    <span class="section-tag">💬 آراء العملاء</span>
+    <h2 class="section-title">ماذا <span class="gradient">يقولون؟</span></h2>
+    <p class="section-desc">تجارب حقيقية من عملاء تعاملوا معي.</p>
+  </div>
+
+  <div class="testimonials-slider reveal">
+    <div class="testimonials-track" id="testimonialsTrack">
+      <div class="testimonial">
+        <p class="testimonial-text">عمل احترافي وسريع، ياس ستوديو فهم الفكرة من أول مرة وسلّم المشروع قبل الموعد. أنصح به بشدة!</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">أ</div>
+          <div class="testimonial-info">
+            <div class="testimonial-name">أحمد محمد</div>
+            <div class="testimonial-role">صاحب شركة ناشئة</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p class="testimonial-text">منصة YasEdu غيرت طريقة تعلمي تماماً، الواجهة سلسة والذكاء الاصطناعي دقيق جداً. شكراً ياس!</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">س</div>
+          <div class="testimonial-info">
+            <div class="testimonial-name">سارة علي</div>
+            <div class="testimonial-role">طالبة جامعية</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p class="testimonial-text">التعامل مع ياس ستوديو كان تجربة ممتازة، تواصل واضح، التزام بالمواعيد، وجودة تفوق التوقعات.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">خ</div>
+          <div class="testimonial-info">
+            <div class="testimonial-name">خالد إبراهيم</div>
+            <div class="testimonial-role">مدير مشاريع</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slider-dots" id="sliderDots">
+      <button class="slider-dot active" aria-label="الشريحة 1"></button>
+      <button class="slider-dot" aria-label="الشريحة 2"></button>
+      <button class="slider-dot" aria-label="الشريحة 3"></button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Contact ===== -->
+<section class="contact" id="contact">
+  <div class="contact-card reveal">
+    <h2>هل لديك <span class="gradient">مشروع؟</span></h2>
+    <p>دعنا نبني شيئاً مذهلاً معاً. أنا متاح للعمل الحر والاستشارات.</p>
+
+    <form class="contact-form" id="contactForm" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">الاسم</label>
+          <input type="text" id="name" name="name" placeholder="اسمك الكريم" required>
+        </div>
+        <div class="form-group">
+          <label for="email">البريد الإلكتروني</label>
+          <input type="email" id="email" name="email" placeholder="example@email.com" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="message">رسالتك</label>
+        <textarea id="message" name="message" placeholder="أخبرني عن مشروعك..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary form-submit magnetic">📧 أرسل الرسالة</button>
+    </form>
+
+    <div class="contact-alt">
+      <a href="mailto:yassermohamedyr2023@gmail.com" class="contact-link">📧 البريد</a>
+      <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" class="contact-link">💬 واتساب</a>
+      <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="contact-link">🐙 GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  صُنع بـ <span class="gradient">❤</span> بواسطة <span class="gradient">Yas Studio</span> © 2026
+</footer>
+
+<!-- ===== Floating Buttons ===== -->
+<button class="to-top" id="toTop" aria-label="العودة للأعلى">↑</button>
+<a href="https://wa.me/" target="_blank" rel="noopener noreferrer" class="whatsapp" aria-label="تواصل عبر واتساب">💬</a>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">تم بنجاح</span>
+</div>
+<script>
+/* ============================================
+   Yas Studio Pro Max — Main Script
+   ============================================ */
+
+// ===== 1. Preloader =====
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('preloader').classList.add('hidden');
+  }, 1800);
+});
+
+// ===== 2. Custom Cursor =====
+const cursorDot = document.getElementById('cursorDot');
+const cursorRing = document.getElementById('cursorRing');
+const glow = document.getElementById('cursorGlow');
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+if (window.matchMedia('(hover:hover)').matches) {
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursorDot.style.left = mouseX + 'px';
+    cursorDot.style.top = mouseY + 'px';
+    glow.style.left = mouseX + 'px';
+    glow.style.top = mouseY + 'px';
+  });
+
+  // Smooth ring follow
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Hover effect on interactive elements
+  document.querySelectorAll('a, button, .tag, .plan, input, textarea').forEach(el => {
+    el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+  });
+}
+
+// ===== 3. Scroll Bar + Nav + To Top =====
+const nav = document.getElementById('nav');
+const scrollBar = document.getElementById('scrollBar');
+const toTop = document.getElementById('toTop');
+
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  scrollBar.style.width = (window.scrollY / h * 100) + '%';
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+  toTop.classList.toggle('show', window.scrollY > 400);
+  updateActiveNav();
+}, { passive: true });
+
+toTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ===== 4. Theme Toggle =====
+const themeToggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+const savedTheme = localStorage.getItem('theme') || 'dark';
+html.setAttribute('data-theme', savedTheme);
+themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+themeToggle.addEventListener('click', () => {
+  const current = html.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
+  showToast(next === 'dark' ? 'الوضع الليلي 🌙' : 'الوضع النهاري ☀️');
+});
+
+// ===== 5. Mobile Menu =====
+const menuBtn = document.getElementById('menuBtn');
+const navLinks = document.getElementById('navLinks');
+menuBtn.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', isOpen);
+  menuBtn.textContent = isOpen ? '✕' : '☰';
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  menuBtn.textContent = '☰';
+}));
+
+// ===== 6. Active Nav Link on Scroll =====
+const sections = document.querySelectorAll('section[id]');
+function updateActiveNav() {
+  const scrollY = window.scrollY + 150;
+  sections.forEach(sec => {
+    const top = sec.offsetTop;
+    const height = sec.offsetHeight;
+    const id = sec.getAttribute('id');
+    const link = navLinks.querySelector(`a[href="#${id}"]`);
+    if (link) {
+      if (scrollY >= top && scrollY < top + height) {
+        navLinks.querySelectorAll('a').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    }
+  });
+}
+
+// ===== 7. Scroll Reveal =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ===== 8. Typing Effect =====
+const typingEl = document.getElementById('typingText');
+const words = ['ياس ستوديو', 'مطور واجهات', 'Frontend Dev', 'مصمم UI/UX'];
+let wordIndex = 0, charIndex = 0, isDeleting = false;
+
+function typeEffect() {
+  const current = words[wordIndex];
+  if (isDeleting) {
+    typingEl.textContent = current.substring(0, charIndex - 1);
+    charIndex--;
+  } else {
+    typingEl.textContent = current.substring(0, charIndex + 1);
+    charIndex++;
+  }
+
+  let speed = isDeleting ? 50 : 100;
+
+  if (!isDeleting && charIndex === current.length) {
+    speed = 2000;
+    isDeleting = true;
+  } else if (isDeleting && charIndex === 0) {
+    isDeleting = false;
+    wordIndex = (wordIndex + 1) % words.length;
+    speed = 500;
+  }
+  setTimeout(typeEffect, speed);
+}
+if (typingEl) typeEffect();
+
+// ===== 9. Animated Counters =====
+const counters = document.querySelectorAll('.stat-num');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = +el.dataset.target;
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      let current = 0;
+      const step = target / 60;
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        el.textContent = prefix + Math.floor(current) + suffix;
+      }, 25);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+counters.forEach(c => counterObserver.observe(c));
+
+// ===== 10. Skill Bars Animation =====
+const skillFills = document.querySelectorAll('.skill-bar-fill');
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      el.style.width = el.dataset.width + '%';
+      barObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+skillFills.forEach(f => barObserver.observe(f));
+
+// ===== 11. Testimonials Slider =====
+const track = document.getElementById('testimonialsTrack');
+const dots = document.querySelectorAll('.slider-dot');
+let currentSlide = 0;
+const totalSlides = dots.length;
+
+function goToSlide(index) {
+  currentSlide = index;
+  track.style.transform = `translateX(${index * 100}%)`;
+  dots.forEach((d, i) => d.classList.toggle('active', i === index));
+}
+
+dots.forEach((dot, i) => dot.addEventListener('click', () => goToSlide(i)));
+
+// Auto-play
+let autoPlay = setInterval(() => {
+  goToSlide((currentSlide + 1) % totalSlides);
+}, 5000);
+
+// Pause on hover
+const sliderContainer = document.querySelector('.testimonials-slider');
+sliderContainer.addEventListener('mouseenter', () => clearInterval(autoPlay));
+sliderContainer.addEventListener('mouseleave', () => {
+  autoPlay = setInterval(() => goToSlide((currentSlide + 1) % totalSlides), 5000);
+});
+
+// ===== 12. Tilt Effect (Platform Card) =====
+const tiltCard = document.getElementById('tiltCard');
+if (tiltCard && window.matchMedia('(hover:hover)').matches) {
+  tiltCard.addEventListener('mousemove', (e) => {
+    const rect = tiltCard.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -5;
+    const rotateY = ((x - centerX) / centerX) * 5;
+    tiltCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+  });
+  tiltCard.addEventListener('mouseleave', () => {
+    tiltCard.style.transform = '';
+  });
+}
+
+// ===== 13. Magnetic Buttons =====
+document.querySelectorAll('.magnetic').forEach(btn => {
+  if (!window.matchMedia('(hover:hover)').matches) return;
+  btn.addEventListener('mousemove', (e) => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) translateY(-3px)`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = '';
+  });
+});
+
+// ===== 14. Toast Notifications =====
+const toast = document.getElementById('toast');
+const toastIcon = document.getElementById('toastIcon');
+const toastMsg = document.getElementById('toastMsg');
+let toastTimer;
+
+function showToast(message, icon = '✅') {
+  toastIcon.textContent = icon;
+  toastMsg.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ===== 15. Contact Form =====
+const contactForm = document.getElementById('contactForm');
+contactForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const message = document.getElementById('message').value.trim();
+
+  if (!name || !email || !message) {
+    showToast('يرجى ملء جميع الحقول ⚠️', '⚠️');
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showToast('بريد إلكتروني غير صالح ⚠️', '⚠️');
+    return;
+  }
+
+  const btn = contactForm.querySelector('button[type="submit"]');
+  const originalText = btn.textContent;
+  btn.textContent = '⏳ جاري الإرسال...';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    btn.textContent = '✅ تم الإرسال!';
+    showToast('تم إرسال رسالتك بنجاح! شكراً لك 🎉', '🎉');
+    contactForm.reset();
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }, 2000);
+  }, 1500);
+});
+
+// ===== 16. Keyboard Shortcuts =====
+document.addEventListener('keydown', (e) => {
+  // Alt + T = Theme Toggle
+  if (e.altKey && e.key === 't') {
+    themeToggle.click();
+  }
+  // Alt + ↑ = Top
+  if (e.altKey && e.key === 'ArrowUp') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  // Esc = Close menu
+  if (e.key === 'Escape') {
+    navLinks.classList.remove('open');
+    menuBtn.textContent = '☰';
+  }
+});
+
+// ===== 17. Smooth Scroll for anchors =====
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// ===== 18. Console Signature =====
+console.log('%c🚀 Yas Studio Pro Max', 'font-size:24px;font-weight:900;background:linear-gradient(135deg,#6366f1,#06b6d4);-webkit-background-clip:text;color:transparent;padding:10px;');
+console.log('%cصُنع بـ ❤ بواسطة Yas Studio | 2026', 'color:#94a3b8;font-size:14px;');
+console.log('%c💡 اختصارات: Alt+T (ثيم) | Alt+↑ (أعلى) | Esc (إغلاق)', 'color:#06b6d4;font-size:12px;');
+</script>
+</body>
+</html>
